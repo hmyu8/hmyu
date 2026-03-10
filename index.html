@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stay Here</title>
+    <title>Stay Here — A Quiet Place on the Internet</title>
+
+  <meta name="description" content="A quiet place on the internet. Just stay here and breathe.">
+
+  <meta property="og:title" content="Stay Here — A Quiet Place on the Internet">
+  <meta property="og:description" content="A quiet place on the internet. Just stay here and breathe.">
+  <meta property="og:type" content="website">
 
   <style>
     html, body {
@@ -32,6 +38,8 @@
       height: auto;
       transform: translate(-50%, -50%);
       object-fit: cover;
+
+      transition: opacity 0.8s ease;
     }
 
     .text {
@@ -78,6 +86,8 @@
   </style>
 </head>
 
+
+
 <body>
   <div class="container">
 
@@ -92,14 +102,16 @@
     </div>
 
     <div class="switch" id="switchArea">
-      tap to change
+      tap or press space
     </div>
 
     <div class="support">
-      <a href="https://www.buymeacoffee.com/hmyu" target="_blank">
-        If this place helped you in some way, you could support this place
-      </a>
-    </div>
+  <a href="https://www.buymeacoffee.com/hmyu" target="_blank">
+    If this place helped you in some way, you could support this place
+  </a>
+  <br>
+  <a href="thoughts.html" style="opacity:0.6;">wonders & thoughts</a>
+</div>
 
   </div>
 
@@ -110,25 +122,48 @@
       // ここに追加するだけで増やせる
     ];
 
-    let currentIndex = 0;
+    let currentIndex = Math.floor(Math.random() * videos.length)
 
-    const video = document.getElementById("bgVideo");
-    const source = document.getElementById("videoSource");
-    const switchArea = document.getElementById("switchArea");
+const video = document.getElementById("bgVideo")
+const source = document.getElementById("videoSource")
+const switchArea = document.getElementById("switchArea")
 
-    function loadVideo(index) {
-      source.src = videos[index];
-      video.load();
-      video.play();
-    }
+function loadVideo(index){
 
-    switchArea.addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % videos.length;
-      loadVideo(currentIndex);
-    });
+  video.style.opacity = 0
 
-    // 初期表示
-    loadVideo(currentIndex);
+  setTimeout(() => {
+
+    source.src = videos[index]
+    video.load()
+    video.play()
+
+    video.style.opacity = 1
+
+  }, 400)
+
+}
+
+switchArea.addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % videos.length
+  loadVideo(currentIndex)
+})
+
+loadVideo(currentIndex)
+
+document.addEventListener("keydown", (event) => {
+
+  if(event.code === "Space"){
+
+    event.preventDefault()
+
+    currentIndex = (currentIndex + 1) % videos.length
+
+    loadVideo(currentIndex)
+
+  }
+
+})
   </script>
 
 </body>

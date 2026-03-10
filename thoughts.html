@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Thoughts</title>
+
+<style>
+
+body{
+margin:0;
+background:black;
+color:white;
+font-family:system-ui;
+height:100vh;
+overflow:hidden;
+}
+
+/* 動画背景 */
+
+video{
+position:absolute;
+top:50%;
+left:50%;
+min-width:100%;
+min-height:100%;
+transform:translate(-50%,-50%);
+object-fit:cover;
+opacity:0.6;
+
+transition: opacity 0.8s ease;
+}
+
+/* コンテンツ */
+
+.container{
+position:relative;
+z-index:2;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+text-align:center;
+padding:40px;
+}
+
+#thought{
+font-size:1.2rem;
+line-height:1.6;
+max-width:600px;
+
+opacity:0;
+transition: opacity 0.8s ease;
+}
+
+button{
+margin-top:40px;
+background:none;
+border:1px solid white;
+color:white;
+padding:10px 20px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<video id="bgVideo" autoplay muted loop playsinline>
+<source id="videoSource" src="" type="video/mp4">
+</video>
+
+<div class="container">
+
+<div>
+<div id="thought"></div>
+
+<button onclick="nextThought()">another thought</button>
+</div>
+
+</div>
+
+<script>
+
+/* thought */
+
+const thoughts = [
+
+"I remember adults telling me to learn from the mistakes, look back at what you've done. But those people who told us these things... they might have been told the same thing when they were young, but were they really doing these things as adults....? Weren't they telling us to do things they weren't doing themselves...?",
+
+"If the school is run by teachers supposedly have a form of love to their students, they wouldn't force them to do things unless it's necessary, since they cannot take responsibility of the students being unhappy as a consequence.",
+
+"If they loved us, and what they've taught implemented undesired agony in our lives; they owe us at least a very sincere apology.",
+
+"The word freedom has been around for a long time now, but the school seems to have desire to teach obedience more than skills to live happily.",
+
+"School seems like a factory to produce obedient robots, a lot of undesired thoughts start to infest us while we are in it.",
+
+"Joining the workforce seems like the goal of the school system, joining the force as a useful obedient robot."
+
+]
+
+/* 動画 */
+
+const videos = [
+"assets/video/hmyu1.mp4",
+"assets/video/hmyu2.mp4"
+]
+
+let currentThought = 0
+let currentVideo = 0
+
+const thoughtEl = document.getElementById("thought")
+const video = document.getElementById("bgVideo")
+const source = document.getElementById("videoSource")
+
+function nextThought(){
+
+currentThought = Math.floor(Math.random() * thoughts.length)
+
+thoughtEl.style.opacity = 0
+
+setTimeout(()=>{
+
+thoughtEl.innerText = thoughts[currentThought]
+
+thoughtEl.style.opacity = 1
+
+},600)
+
+}
+
+function nextVideo(){
+
+currentVideo = (currentVideo + 1) % videos.length
+
+video.style.opacity = 0
+
+setTimeout(()=>{
+
+source.src = videos[currentVideo]
+
+video.load()
+video.play()
+
+video.style.opacity = 1
+
+},400)
+
+}
+
+/* button */
+
+function next(){
+
+nextThought()
+nextVideo()
+
+}
+
+/* ボタン */
+
+document.querySelector("button").onclick = next
+
+/* spaceキー */
+
+document.addEventListener("keydown",(event)=>{
+
+if(event.code === "Space"){
+
+event.preventDefault()
+
+next()
+
+}
+
+})
+
+/* 初期表示 */
+
+nextThought()
+nextVideo()
+
+</script>
+
+</body>
+</html>
