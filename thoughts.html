@@ -26,8 +26,22 @@ min-height:100%;
 transform:translate(-50%,-50%);
 object-fit:cover;
 opacity:0.6;
-
 transition: opacity 0.8s ease;
+}
+
+/* ⭐ ホワイトフラッシュ */
+
+#flash{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+opacity:0;
+pointer-events:none;
+transition: opacity 0.4s ease;
+z-index:10;
 }
 
 /* コンテンツ */
@@ -67,6 +81,9 @@ cursor:pointer;
 
 <body>
 
+<!-- ⭐ フラッシュ -->
+<div id="flash"></div>
+
 <video id="bgVideo" autoplay muted loop playsinline>
 <source id="videoSource" src="" type="video/mp4">
 </video>
@@ -76,7 +93,7 @@ cursor:pointer;
 <div>
 <div id="thought"></div>
 
-<button onclick="nextThought()">another thought</button>
+<button onclick="next()">another thought</button>
 </div>
 
 </div>
@@ -85,11 +102,23 @@ cursor:pointer;
 
 /* thought */
 
-const thoughts = [
+const calmThoughts = [
+
+"Abundance of nature, especially when it's mostly green and blue accompanied by absence of nuisance is what we sometimes crave.",
+
+"Unnatural, complete silence is not really desired, sounds from movements of the air and water are desired.",
+
+"Whether it's digial or physical, sometimes human interactions can get a little too much.",
+
+"Calmness is sometimes what we all desire, because being overwhelmed by its opposite feels not really ourselves."
+
+]
+
+const rareThoughts = [
 
 "I remember adults telling me to learn from the mistakes, look back at what you've done. But those people who told us these things... they might have been told the same thing when they were young, but were they really doing these things as adults....? Weren't they telling us to do things they weren't doing themselves...?",
 
-"If the school is run by teachers supposedly have a form of love to their students, they wouldn't force them to do things unless it's necessary, since they cannot take responsibility of the students being unhappy as a consequence.",
+"If the school is run by teachers supposedly have a form of love to their students, they wouldn't force them to do things unless it's necessary, since they cannot take responsibility of the students being unhappy as a consequence as they grow.",
 
 "If they loved us, and what they've taught implemented undesired agony in our lives; they owe us at least a very sincere apology.",
 
@@ -97,7 +126,9 @@ const thoughts = [
 
 "School seems like a factory to produce obedient robots, a lot of undesired thoughts start to infest us while we are in it.",
 
-"Joining the workforce seems like the goal of the school system, joining the force as a useful obedient robot."
+"Joining the workforce seems like the goal of the school system, joining the force as a useful obedient robot.",
+
+"The curse of the education until now is that it teaches us to follow-and-obey for so long, some(many?) of us forget/never learn(or barely learn) how to have authencity in our lives."
 
 ]
 
@@ -108,22 +139,34 @@ const videos = [
 "assets/video/hmyu2.mp4"
 ]
 
-let currentThought = 0
-let currentVideo = 0
+let currentVideo = Math.floor(Math.random()*videos.length)
 
 const thoughtEl = document.getElementById("thought")
 const video = document.getElementById("bgVideo")
 const source = document.getElementById("videoSource")
+const flash = document.getElementById("flash")
 
 function nextThought(){
 
-currentThought = Math.floor(Math.random() * thoughts.length)
+let selectedThought
+
+if(Math.random() < 0.1){
+
+selectedThought =
+rareThoughts[Math.floor(Math.random()*rareThoughts.length)]
+
+}else{
+
+selectedThought =
+calmThoughts[Math.floor(Math.random()*calmThoughts.length)]
+
+}
 
 thoughtEl.style.opacity = 0
 
 setTimeout(()=>{
 
-thoughtEl.innerText = thoughts[currentThought]
+thoughtEl.innerText = selectedThought
 
 thoughtEl.style.opacity = 1
 
@@ -135,44 +178,38 @@ function nextVideo(){
 
 currentVideo = (currentVideo + 1) % videos.length
 
-video.style.opacity = 0
+flash.style.opacity = 1
 
 setTimeout(()=>{
 
-source.src = videos[currentVideo]
+video.style.opacity = 0
 
+source.src = videos[currentVideo]
 video.load()
 video.play()
 
 video.style.opacity = 1
 
-},400)
+flash.style.opacity = 0
+
+},300)
 
 }
 
-/* button */
+/* 共通切り替え */
 
 function next(){
-
 nextThought()
 nextVideo()
-
 }
-
-/* ボタン */
-
-document.querySelector("button").onclick = next
 
 /* spaceキー */
 
 document.addEventListener("keydown",(event)=>{
 
 if(event.code === "Space"){
-
 event.preventDefault()
-
 next()
-
 }
 
 })
